@@ -6,25 +6,31 @@ namespace PlatformerFNAEnvato
 {
     public class FNAgame : Game
     {
+        GraphicsDeviceManager gma;
         private SpriteBatch batch;
         Character player;
         private const float mult = 2f;
 
         public FNAgame()
         {
-            GraphicsDeviceManager gma = new GraphicsDeviceManager(this);
-            gma.PreferredBackBufferHeight = (int)(240 * mult);
-            gma.PreferredBackBufferWidth = (int)(320 * mult);
-            //gma.SynchronizeWithVerticalRetrace = false;
-            //IsFixedTimeStep = true;
-            //TargetElapsedTime = TimeSpan.FromSeconds(1f / 120f);
+            gma = new GraphicsDeviceManager(this);
+
+            Content.RootDirectory = "../../../Content";
+            
+            IsMouseVisible = true;
 
             player = new Character();
         }
 
         protected override void Initialize()
         {
-            Content.RootDirectory = "../../../Content";
+            gma.PreferredBackBufferHeight = (int)(240 * mult);
+            gma.PreferredBackBufferWidth = (int)(320 * mult);
+            //gma.SynchronizeWithVerticalRetrace = false;
+            //IsFixedTimeStep = true;
+            //TargetElapsedTime = TimeSpan.FromSeconds(1f / 120);
+            gma.ApplyChanges();
+
 
             batch = new SpriteBatch(GraphicsDevice);
             player.Init();
@@ -52,7 +58,7 @@ namespace PlatformerFNAEnvato
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            batch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Matrix.CreateScale(mult));
+            batch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Matrix.CreateScale(mult));
                 player.Draw(batch);
             batch.End();
 

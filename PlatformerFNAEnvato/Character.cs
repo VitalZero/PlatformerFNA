@@ -9,7 +9,7 @@ namespace PlatformerFNAEnvato
     public class Character : MovingObject
     {
         public float WalkSpeed { get { return 160f; } }
-        public float JumpSpeed { get { return -310f; } }
+        public float JumpSpeed { get { return -410f; } }
         public float MinJumpSpeed { get { return 200f; } }
         public float HalfSizeX { get { return 8f; } }
         public float HalfSizeY { get { return 16f; } }
@@ -20,7 +20,7 @@ namespace PlatformerFNAEnvato
         private CharacterState currentState = CharacterState.Stand;
         private float jumpSpeed;
         private float walkSpeed;
-        private const float gravity = 500f;
+        private const float gravity = 800f;
         private Texture2D texture;
         SpriteEffects flip = SpriteEffects.None;
 
