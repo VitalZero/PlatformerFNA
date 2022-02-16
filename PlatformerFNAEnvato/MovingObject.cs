@@ -11,8 +11,7 @@ namespace PlatformerFNAEnvato
         public Vector2 Speed;
         public Vector2 Scale;
         public Vector2 AabbOffset;
-
-        public Vector2 OldSpeed{ get; protected set; }
+        public Vector2 OldSpeed;
 
         public bool PushedRightWall;
         public bool PushingRightWall;

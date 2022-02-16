@@ -64,6 +64,15 @@
     <Compile Include="AABB.cs" />
     <Compile Include="App.cs" />
     <Compile Include="Character.cs" />
+    <Compile Include="ECS\Components\Component.cs" />
+    <Compile Include="ECS\Entity.cs" />
+    <Compile Include="ECS\Components\InputComponent.cs" />
+    <Compile Include="ECS\Components\PhysicsComponent.cs" />
+    <Compile Include="ECS\Components\SpriteComponent.cs" />
+    <Compile Include="ECS\Components\TransformComponent.cs" />
+    <Compile Include="ECS\Components\VelocityComponent.cs" />
+    <Compile Include="ECS\Systems\PhysicsSystem.cs" />
+    <Compile Include="ECS\Systems\System.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="MovingObject.cs" />
   </ItemGroup>

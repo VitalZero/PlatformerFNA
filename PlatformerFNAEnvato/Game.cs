@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PlatformerFNAEnvato.ECS;
 using System;
 
 namespace PlatformerFNAEnvato
@@ -8,8 +9,9 @@ namespace PlatformerFNAEnvato
     {
         GraphicsDeviceManager gma;
         private SpriteBatch batch;
-        Character player;
+        //Character player;
         private const float mult = 2f;
+        Entity testPlayer;
 
         public FNAgame()
         {
@@ -19,7 +21,14 @@ namespace PlatformerFNAEnvato
             
             IsMouseVisible = true;
 
-            player = new Character();
+            //player = new Character();
+            testPlayer = new Entity();
+            testPlayer.AddComponent(new VelocityComponent());
+            testPlayer.AddComponent(new TransformComponent());
+            testPlayer.AddComponent(new InputComponent());
+            testPlayer.AddComponent(new PhysicsComponent());
+            testPlayer.AddComponent(new SpriteComponent());
+
         }
 
         protected override void Initialize()
@@ -30,23 +39,28 @@ namespace PlatformerFNAEnvato
             //IsFixedTimeStep = true;
             //TargetElapsedTime = TimeSpan.FromSeconds(1f / 120);
             gma.ApplyChanges();
-
+            testPlayer.GetComponent<TransformComponent>().position = new Vector2(100, 100);
+            testPlayer.GetComponent<VelocityComponent>().walkSpeed = 100f;
 
             batch = new SpriteBatch(GraphicsDevice);
-            player.Init();
+            //player.Init();
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            player.LoadContent(Content);
+            testPlayer.GetComponent<SpriteComponent>().texture = Content.Load<Texture2D>("mariosingle");
+
+            //player.LoadContent(Content);
             base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            player.Update(gameTime);
+            //player.Update(gameTime);
+
+            testPlayer.Update(gameTime);
 
             float fps = 1f / (float)gameTime.ElapsedGameTime.TotalSeconds;
             System.Console.WriteLine(fps);
@@ -59,7 +73,8 @@ namespace PlatformerFNAEnvato
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             batch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Matrix.CreateScale(mult));
-                player.Draw(batch);
+            testPlayer.Draw(batch);
+            //player.Draw(batch);
             batch.End();
 
             base.Draw(gameTime);
