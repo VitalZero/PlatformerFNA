@@ -56,14 +56,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="FNA">
-      <HintPath>..\..\..\..\..\..\SDK\FNA\bin\Release\FNA.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AABB.cs" />
     <Compile Include="App.cs" />
     <Compile Include="Character.cs" />
+    <Compile Include="Command\ICommand.cs" />
     <Compile Include="ECS\Components\Component.cs" />
     <Compile Include="ECS\Entity.cs" />
     <Compile Include="ECS\Components\InputComponent.cs" />
@@ -74,11 +70,18 @@
     <Compile Include="ECS\Systems\PhysicsSystem.cs" />
     <Compile Include="ECS\Systems\System.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Command\JumpCommand.cs" />
     <Compile Include="MovingObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\mariosingle.png" />
     <Content Include="Content\pixel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\..\SDK\FNA\FNA\FNA.csproj">
+      <Project>{35253ce1-c864-4cd3-8249-4d1319748e8f}</Project>
+      <Name>FNA</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

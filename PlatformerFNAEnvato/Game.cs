@@ -9,9 +9,9 @@ namespace PlatformerFNAEnvato
     {
         GraphicsDeviceManager gma;
         private SpriteBatch batch;
-        //Character player;
+        Character player;
         private const float mult = 2f;
-        Entity testPlayer;
+        //Entity testPlayer;
 
         public FNAgame()
         {
@@ -21,13 +21,13 @@ namespace PlatformerFNAEnvato
             
             IsMouseVisible = true;
 
-            //player = new Character();
-            testPlayer = new Entity();
-            testPlayer.AddComponent(new VelocityComponent());
-            testPlayer.AddComponent(new TransformComponent());
-            testPlayer.AddComponent(new InputComponent());
-            testPlayer.AddComponent(new PhysicsComponent());
-            testPlayer.AddComponent(new SpriteComponent());
+            player = new Character();
+            //testPlayer = new Entity();
+            //testPlayer.AddComponent(new VelocityComponent());
+            //testPlayer.AddComponent(new TransformComponent());
+            //testPlayer.AddComponent(new InputComponent());
+            //testPlayer.AddComponent(new PhysicsComponent());
+            //testPlayer.AddComponent(new SpriteComponent());
 
         }
 
@@ -39,31 +39,31 @@ namespace PlatformerFNAEnvato
             //IsFixedTimeStep = true;
             //TargetElapsedTime = TimeSpan.FromSeconds(1f / 120);
             gma.ApplyChanges();
-            testPlayer.GetComponent<TransformComponent>().position = new Vector2(100, 100);
-            testPlayer.GetComponent<VelocityComponent>().walkSpeed = 100f;
+            //testPlayer.GetComponent<TransformComponent>().position = new Vector2(100, 100);
+            //testPlayer.GetComponent<VelocityComponent>().walkSpeed = 100f;
 
             batch = new SpriteBatch(GraphicsDevice);
-            //player.Init();
+            player.Init();
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            testPlayer.GetComponent<SpriteComponent>().texture = Content.Load<Texture2D>("mariosingle");
+            //testPlayer.GetComponent<SpriteComponent>().texture = Content.Load<Texture2D>("mariosingle");
 
-            //player.LoadContent(Content);
+            player.LoadContent(Content);
             base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            //player.Update(gameTime);
+            player.Update(gameTime);
 
-            testPlayer.Update(gameTime);
+            //testPlayer.Update(gameTime);
 
             float fps = 1f / (float)gameTime.ElapsedGameTime.TotalSeconds;
-            System.Console.WriteLine(fps);
+            Window.Title = (fps.ToString("00.000"));
 
             base.Update(gameTime);
         }
@@ -73,8 +73,8 @@ namespace PlatformerFNAEnvato
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             batch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Matrix.CreateScale(mult));
-            testPlayer.Draw(batch);
-            //player.Draw(batch);
+            //testPlayer.Draw(batch);
+            player.Draw(batch);
             batch.End();
 
             base.Draw(gameTime);
