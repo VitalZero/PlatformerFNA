@@ -59,19 +59,13 @@
     <Compile Include="AABB.cs" />
     <Compile Include="App.cs" />
     <Compile Include="Character.cs" />
-    <Compile Include="Command\ICommand.cs" />
-    <Compile Include="ECS\Components\Component.cs" />
-    <Compile Include="ECS\Entity.cs" />
-    <Compile Include="ECS\Components\InputComponent.cs" />
-    <Compile Include="ECS\Components\PhysicsComponent.cs" />
-    <Compile Include="ECS\Components\SpriteComponent.cs" />
-    <Compile Include="ECS\Components\TransformComponent.cs" />
-    <Compile Include="ECS\Components\VelocityComponent.cs" />
-    <Compile Include="ECS\Systems\PhysicsSystem.cs" />
-    <Compile Include="ECS\Systems\System.cs" />
+    <Compile Include="CharacterStates\IState.cs" />
+    <Compile Include="CharacterStates\JumpState.cs" />
+    <Compile Include="CharacterStates\WalkState.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Command\JumpCommand.cs" />
     <Compile Include="MovingObject.cs" />
+    <Compile Include="CharacterStates\StandState.cs" />
+    <Compile Include="StateMachine.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\mariosingle.png" />

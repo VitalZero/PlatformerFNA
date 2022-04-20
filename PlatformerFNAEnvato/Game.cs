@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PlatformerFNAEnvato.ECS;
 using System;
 
 namespace PlatformerFNAEnvato
@@ -22,12 +21,6 @@ namespace PlatformerFNAEnvato
             IsMouseVisible = true;
 
             player = new Character();
-            //testPlayer = new Entity();
-            //testPlayer.AddComponent(new VelocityComponent());
-            //testPlayer.AddComponent(new TransformComponent());
-            //testPlayer.AddComponent(new InputComponent());
-            //testPlayer.AddComponent(new PhysicsComponent());
-            //testPlayer.AddComponent(new SpriteComponent());
 
         }
 
@@ -39,8 +32,6 @@ namespace PlatformerFNAEnvato
             //IsFixedTimeStep = true;
             //TargetElapsedTime = TimeSpan.FromSeconds(1f / 120);
             gma.ApplyChanges();
-            //testPlayer.GetComponent<TransformComponent>().position = new Vector2(100, 100);
-            //testPlayer.GetComponent<VelocityComponent>().walkSpeed = 100f;
 
             batch = new SpriteBatch(GraphicsDevice);
             player.Init();
@@ -50,8 +41,6 @@ namespace PlatformerFNAEnvato
 
         protected override void LoadContent()
         {
-            //testPlayer.GetComponent<SpriteComponent>().texture = Content.Load<Texture2D>("mariosingle");
-
             player.LoadContent(Content);
             base.LoadContent();
         }
@@ -59,8 +48,6 @@ namespace PlatformerFNAEnvato
         protected override void Update(GameTime gameTime)
         {
             player.Update(gameTime);
-
-            //testPlayer.Update(gameTime);
 
             float fps = 1f / (float)gameTime.ElapsedGameTime.TotalSeconds;
             Window.Title = (fps.ToString("00.000"));
@@ -73,7 +60,7 @@ namespace PlatformerFNAEnvato
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             batch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Matrix.CreateScale(mult));
-            //testPlayer.Draw(batch);
+
             player.Draw(batch);
             batch.End();
 

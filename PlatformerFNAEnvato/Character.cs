@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using PlatformerFNAEnvato.CharacterStates;
 using System;
 
 namespace PlatformerFNAEnvato
@@ -14,17 +15,21 @@ namespace PlatformerFNAEnvato
         public float HalfSizeX { get { return 8f; } }
         public float HalfSizeY { get { return 16f; } }
         public float MaxFallingSpeed { get { return 900f; } }
-        KeyboardState keyState;
+        public KeyboardState keyState;
 
         public enum CharacterState { Stand, Walk, Jump, GrabLedge }
         protected KeyboardState oldState;
         public CharacterState currentState = CharacterState.Stand;
         public float jumpSpeed;
-        private float walkSpeed;
-        private const float gravity = 800f;
-        private Texture2D texture;
-        SpriteEffects flip = SpriteEffects.None;
-        JumpCommand jumpCmd;
+        public float walkSpeed;
+        public readonly float gravity = 800f;
+        public Texture2D texture;
+        public SpriteEffects flip = SpriteEffects.None;
+
+        public StandState standState;
+        public JumpState jumpState;
+        public WalkState walkState;
+        public StateMachine machine;
 
         public void Init()
         {
@@ -35,7 +40,14 @@ namespace PlatformerFNAEnvato
             walkSpeed = WalkSpeed;
 
             Scale = Vector2.One;
-            jumpCmd = new JumpCommand();
+
+            machine = new StateMachine();
+
+            standState = new StandState(this);
+            jumpState = new JumpState(this);
+            walkState = new WalkState(this);
+
+            machine.ChangeState(standState);
         }
 
         public void LoadContent(ContentManager content)
@@ -47,91 +59,9 @@ namespace PlatformerFNAEnvato
         {
             keyState = Keyboard.GetState();
 
-            switch(currentState)
-            {
-                case CharacterState.Stand:
-                    {
-                        Speed = Vector2.Zero;
-                        //animationPlayer.Play("stand");
-                        if (!IsOnGround)
-                        {
-                            currentState = CharacterState.Jump;
-                            break;
-                        }
+            machine.ProcessStatechanges();
 
-                        if (keyState.IsKeyDown(Keys.Right) != keyState.IsKeyDown(Keys.Left))
-                        {
-                            currentState = CharacterState.Walk;
-                            break;
-                        }
-                        else if(keyState.IsKeyDown(Keys.Space))
-                        {
-                            jumpCmd.Execute(this);
-                            break;
-                        }
-                    }
-
-                    break;
-
-                case CharacterState.Walk:
-                    {
-                        //animationPlayer.Play("walk");
-                        if (keyState.IsKeyDown(Keys.Right) == keyState.IsKeyDown(Keys.Left))
-                        {
-                            currentState = CharacterState.Stand;
-                            Speed = Vector2.Zero;
-                        }
-                        else if(keyState.IsKeyDown(Keys.Right))
-                        {
-                            if(PushingRightWall)
-                            {
-                                Speed.X = 0f;
-                            }
-                            else
-                            {
-                                Speed.X = walkSpeed;
-                            }
-
-                            Scale.X = -Math.Abs(Scale.X);
-                            flip = SpriteEffects.None;
-                        }
-                        else if(keyState.IsKeyDown(Keys.Left))
-                        {
-                            if(PushingLeftWall)
-                            {
-                                Speed.X = 0f;
-                            }
-                            else
-                            {
-                                Speed.X = -walkSpeed;
-                            }
-
-                            Scale.X = Math.Abs(Scale.X);
-                            flip = SpriteEffects.FlipHorizontally;
-                        }
-
-                        if (keyState.IsKeyDown(Keys.Space))
-                        {
-                            Speed.Y = jumpSpeed;
-                            //sound.Play();
-                            currentState = CharacterState.Jump;
-                            break;
-                        }
-                        else if(!IsOnGround)
-                        {
-                            currentState = CharacterState.Jump;
-                            break;
-                        }
-                    }
-                    break;
-
-                case CharacterState.Jump:
-                    UpdateJumpState((float)gameTime.ElapsedGameTime.TotalSeconds);
-                    break;
-
-                case CharacterState.GrabLedge:
-                    break;
-            }
+            machine.GetCurrentState().Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             UpdatePhysics(gameTime);
 
@@ -147,72 +77,7 @@ namespace PlatformerFNAEnvato
         {
             Vector2 size = new Vector2(Aabb.HalfSize.X * 2f, Aabb.HalfSize.Y * 2f);
 
-
-            batch.Draw(texture,
-                Pos,
-                null,
-                Color.White,
-                0f,
-                Aabb.HalfSize,
-                1f,
-                flip,
-                0f);//new Rectangle((int)Pos.X, (int)Pos.Y, (int)size.X, (int)size.Y), Color.Red);
-        }
-
-        private void UpdateJumpState(float dt)
-        {
-            //animationPlayer.Play("jump")
-            Speed.Y += gravity * dt;
-            Speed.Y = Math.Min(Speed.Y, MaxFallingSpeed);
-
-            if (keyState.IsKeyDown(Keys.Right) == keyState.IsKeyDown(Keys.Left))
-            {
-                Speed.X = 0f;
-            }
-            else if (keyState.IsKeyDown(Keys.Right))
-            {
-                if (PushingRightWall)
-                {
-                    Speed.X = 0f;
-                }
-                else
-                {
-                    Speed.X = walkSpeed;
-                }
-
-                Scale.X = Math.Abs(Scale.X);
-            }
-            else if (keyState.IsKeyDown(Keys.Left))
-            {
-                if (PushingLeftWall)
-                {
-                    Speed.X = 0f;
-                }
-                else
-                {
-                    Speed.X = -walkSpeed;
-                }
-            }
-
-            //if (!keyState.IsKeyDown(Keys.Space) && Speed.Y > 0f)
-            //{
-            //    Speed.Y = Math.Min(Speed.Y, 200);
-            //}
-
-
-            if (IsOnGround)
-            {
-                if (keyState.IsKeyDown(Keys.Right) == keyState.IsKeyDown(Keys.Left))
-                {
-                    currentState = CharacterState.Stand;
-                    Speed = Vector2.Zero;
-                }
-                else
-                {
-                    currentState = CharacterState.Stand;
-                    Speed.Y = 0f;
-                }
-            }
+            machine.GetCurrentState().Draw(batch);
         }
     }
 }
