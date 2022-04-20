@@ -9,6 +9,7 @@ namespace PlatformerFNAEnvato
 {
     public class Character : MovingObject
     {
+        // variables public for states to easy access
         public float WalkSpeed { get { return 160f; } }
         public float JumpSpeed { get { return -410f; } }
         public float MinJumpSpeed { get { return 200f; } }
@@ -26,9 +27,11 @@ namespace PlatformerFNAEnvato
         public Texture2D texture;
         public SpriteEffects flip = SpriteEffects.None;
 
+        // states are loaded on character so the machine can change to them easily
         public StandState standState;
         public JumpState jumpState;
         public WalkState walkState;
+        // character state machine controller
         public StateMachine machine;
 
         public void Init()
@@ -59,10 +62,13 @@ namespace PlatformerFNAEnvato
         {
             keyState = Keyboard.GetState();
 
+            // queued state changes, calls onExit for outgoing state and onEnter for incoming state
             machine.ProcessStatechanges();
+
 
             machine.GetCurrentState().Update((float)gameTime.ElapsedGameTime.TotalSeconds);
 
+            // Update moving object physics after state controller
             UpdatePhysics(gameTime);
 
             if (IsOnGround && !WasOnGround)
