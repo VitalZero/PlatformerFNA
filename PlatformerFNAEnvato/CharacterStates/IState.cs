@@ -4,9 +4,9 @@ namespace PlatformerFNAEnvato.CharacterStates
 {
     public interface IState
     {
-        void OnEnter();
-        void Update(float dt);
+        void OnEnter(Character owner);
+        IState Update(Character owner, float dt);
         void Draw(SpriteBatch spriteBatch);
-        void OnExit();
+        void OnExit(Character owner);
     }
 }

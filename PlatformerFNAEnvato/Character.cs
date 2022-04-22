@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PlatformerFNAEnvato.CharacterStates;
+using PlatformerFNAEnvato.Command;
 using System;
 
 namespace PlatformerFNAEnvato
@@ -32,7 +33,7 @@ namespace PlatformerFNAEnvato
         public JumpState jumpState;
         public WalkState walkState;
         // character state machine controller
-        public StateMachine machine;
+        private IState _state;
 
         public void Init()
         {
@@ -43,19 +44,17 @@ namespace PlatformerFNAEnvato
             walkSpeed = WalkSpeed;
 
             Scale = Vector2.One;
-
-            machine = new StateMachine();
-
-            standState = new StandState(this);
-            jumpState = new JumpState(this);
-            walkState = new WalkState(this);
-
-            machine.ChangeState(standState);
         }
 
         public void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>("mariosingle");
+            _state = new JumpState();
+        }
+
+        public void Input()
+        {
+
         }
 
         public void Update(GameTime gameTime)
@@ -63,10 +62,18 @@ namespace PlatformerFNAEnvato
             keyState = Keyboard.GetState();
 
             // queued state changes, calls onExit for outgoing state and onEnter for incoming state
-            machine.ProcessStatechanges();
+            //machine.ProcessStatechanges();
 
+            IState tmpState = _state.Update(this, (float)gameTime.ElapsedGameTime.TotalSeconds);
 
-            machine.GetCurrentState().Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            if(tmpState != null)
+            {
+                _state.OnExit(this);
+
+                _state = tmpState;
+
+                _state.OnEnter(this);
+            }
 
             // Update moving object physics after state controller
             UpdatePhysics(gameTime);
@@ -83,7 +90,15 @@ namespace PlatformerFNAEnvato
         {
             Vector2 size = new Vector2(Aabb.HalfSize.X * 2f, Aabb.HalfSize.Y * 2f);
 
-            machine.GetCurrentState().Draw(batch);
+            batch.Draw(texture,
+                            Pos,
+                            null,
+                            Color.White,
+                            0f,
+                            Aabb.HalfSize,
+                            1f,
+                            flip,
+                            0f);
         }
     }
 }
