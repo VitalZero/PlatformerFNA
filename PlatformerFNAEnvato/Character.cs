@@ -16,7 +16,6 @@ namespace PlatformerFNAEnvato
         public float MinJumpSpeed { get { return 200f; } }
         public float HalfSizeX { get { return 8f; } }
         public float HalfSizeY { get { return 16f; } }
-        public float MaxFallingSpeed { get { return 900f; } }
         public KeyboardState keyState;
 
         public enum CharacterState { Stand, Walk, Jump, GrabLedge }

@@ -30,7 +30,7 @@ namespace PlatformerFNAEnvato
             gma.PreferredBackBufferWidth = (int)(320 * mult);
             //gma.SynchronizeWithVerticalRetrace = false;
             //IsFixedTimeStep = true;
-            //TargetElapsedTime = TimeSpan.FromSeconds(1f / 120);
+            //TargetElapsedTime = TimeSpan.FromSeconds(1f / 60f);
             gma.ApplyChanges();
 
             batch = new SpriteBatch(GraphicsDevice);

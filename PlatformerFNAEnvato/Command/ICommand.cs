@@ -12,23 +12,23 @@ namespace PlatformerFNAEnvato.Command
         void Execute();
     }
 
-    public class Move : ICommand
+    public class MoveCommand : ICommand
     {
         private Vector2 oldPos;
-        private Vector2 offset;
+        private Vector2 velocity;
         private Character owner;
 
-        public Move(Character owner, Vector2 offset)
+        public MoveCommand(Character owner, Vector2 velocity)
         {
             this.owner = owner;
-            this.offset = offset;
+            this.velocity = velocity;
         }
 
         public void Execute()
         {
             oldPos = owner.Pos;
 
-            owner.Pos += offset;
+            owner.Move(velocity);
         }
     }
 }

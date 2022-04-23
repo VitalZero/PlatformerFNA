@@ -12,6 +12,8 @@ namespace PlatformerFNAEnvato.CharacterStates
 {
     public class WalkState : IState
     {
+        ICommand cmd;
+
         public void OnEnter(Character owner)
         {
         }
@@ -32,10 +34,12 @@ namespace PlatformerFNAEnvato.CharacterStates
             {
                 if (owner.PushingRightWall)
                 {
+                    //owner.Move(0, 0);
                     owner.Speed.X = 0f;
                 }
                 else
                 {
+                    //owner.Move(owner.walkSpeed * dt, 0);
                     owner.Speed.X = owner.walkSpeed;
                 }
 
@@ -46,10 +50,12 @@ namespace PlatformerFNAEnvato.CharacterStates
             {
                 if (owner.PushingLeftWall)
                 {
+                    //owner.Move(0, 0);
                     owner.Speed.X = 0f;
                 }
                 else
                 {
+                    //owner.Move(-owner.walkSpeed * dt, 0);
                     owner.Speed.X = -owner.walkSpeed;
                 }
 
