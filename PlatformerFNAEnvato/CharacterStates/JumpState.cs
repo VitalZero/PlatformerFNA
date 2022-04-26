@@ -23,26 +23,25 @@ namespace PlatformerFNAEnvato.CharacterStates
         public IState Update(Character owner, float dt)
         {
             //animationPlayer.Play("jump")
-            owner.Speed.Y += owner.gravity * dt;
-            owner.Speed.Y = Math.Min(owner.Speed.Y, owner.MaxFallingSpeed);
+            owner.Speed.Y += owner.Gravity * dt;
+
+            owner.Speed.Y = MathHelper.Clamp(owner.Speed.Y, -owner.MaxFallingSpeed, owner.MaxFallingSpeed);
+
             //owner.Accelerate(0, owner.gravity * dt);
 
             if (owner.keyState.IsKeyDown(Keys.Right) == owner.keyState.IsKeyDown(Keys.Left))
             {
-                //owner.Move(0, 0);
-                owner.Speed.X = 0f;
+                owner.Move(0, 0);
             }
             else if (owner.keyState.IsKeyDown(Keys.Right))
             {
                 if (owner.PushingRightWall)
                 {
-                    //owner.Move(0, 0);
-                    owner.Speed.X = 0f;
+                    owner.Move(0, 0);
                 }
                 else
                 {
-                    //owner.Move(owner.WalkSpeed * dt, 0);
-                    owner.Speed.X = owner.walkSpeed;
+                    owner.Move(owner.walkSpeed * dt, 0);
                 }
 
                 owner.Scale.X = Math.Abs(owner.Scale.X);
@@ -52,12 +51,10 @@ namespace PlatformerFNAEnvato.CharacterStates
                 if (owner.PushingLeftWall)
                 {
                     owner.Move(0, 0);
-                    //owner.Speed.X = 0f;
                 }
                 else
                 {
-                    //owner.Move(-owner.WalkSpeed * dt, 0);
-                    owner.Speed.X = -owner.walkSpeed;
+                    owner.Move(-owner.WalkSpeed * dt, 0);
                 }
             }
 

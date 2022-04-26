@@ -23,7 +23,6 @@ namespace PlatformerFNAEnvato
         public CharacterState currentState = CharacterState.Stand;
         public float jumpSpeed;
         public float walkSpeed;
-        public readonly float gravity = 800f;
         public Texture2D texture;
         public SpriteEffects flip = SpriteEffects.None;
 
@@ -36,6 +35,7 @@ namespace PlatformerFNAEnvato
 
         public void Init()
         {
+            gravity = 800f;
             Aabb = new AABB(Vector2.Zero, new Vector2(HalfSizeX, HalfSizeY));
             AabbOffset.Y = Aabb.HalfSize.Y;
 
@@ -74,7 +74,6 @@ namespace PlatformerFNAEnvato
                 _state.OnEnter(this);
             }
 
-            // Update moving object physics after state controller
             UpdatePhysics(gameTime);
 
             if (IsOnGround && !WasOnGround)

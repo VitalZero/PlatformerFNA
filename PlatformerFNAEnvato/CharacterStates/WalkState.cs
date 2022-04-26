@@ -34,34 +34,31 @@ namespace PlatformerFNAEnvato.CharacterStates
             {
                 if (owner.PushingRightWall)
                 {
-                    //owner.Move(0, 0);
-                    owner.Speed.X = 0f;
+                    owner.Move(0, 0);
                 }
                 else
                 {
-                    //owner.Move(owner.walkSpeed * dt, 0);
-                    owner.Speed.X = owner.walkSpeed;
+                    owner.Move(owner.walkSpeed * dt, 0);
                 }
 
-                owner.Scale.X = -Math.Abs(owner.Scale.X);
                 owner.flip = SpriteEffects.None;
             }
             else if (owner.keyState.IsKeyDown(Keys.Left))
             {
                 if (owner.PushingLeftWall)
                 {
-                    //owner.Move(0, 0);
-                    owner.Speed.X = 0f;
+                    owner.Move(0, 0);
                 }
                 else
                 {
-                    //owner.Move(-owner.walkSpeed * dt, 0);
-                    owner.Speed.X = -owner.walkSpeed;
+                    owner.Move(-owner.walkSpeed * dt, 0);
                 }
 
-                owner.Scale.X = Math.Abs(owner.Scale.X);
                 owner.flip = SpriteEffects.FlipHorizontally;
             }
+
+            owner.Scale.X = Math.Abs(owner.Scale.X);
+
 
             if (owner.keyState.IsKeyDown(Keys.Space) || !owner.IsOnGround)
             {

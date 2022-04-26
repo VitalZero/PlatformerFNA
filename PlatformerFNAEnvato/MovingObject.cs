@@ -5,14 +5,13 @@ namespace PlatformerFNAEnvato
 {
     public class MovingObject
     {
-        public Vector2 OldPos;
+        protected Vector2 OldPos;
         public Vector2 Pos;
         public AABB Aabb;
         public Vector2 Speed;
         public Vector2 Scale;
-        public Vector2 AabbOffset;
-        public Vector2 OldSpeed;
-        private Vector2 Accel;
+        protected Vector2 AabbOffset;
+        protected Vector2 OldSpeed;
 
         public bool PushedRightWall;
         public bool PushingRightWall;
@@ -23,6 +22,8 @@ namespace PlatformerFNAEnvato
         public bool WasAtCeiling;
         public bool IsAtCeiling;
         public float MaxFallingSpeed { get { return 900f; } }
+        public float Gravity { get { return gravity; } }
+        protected float gravity;
 
         public void Move(Vector2 velocity)
         {
@@ -31,30 +32,16 @@ namespace PlatformerFNAEnvato
 
         public void Move(float x, float y)
         {
+            OldPos = Pos;
+
             Pos.X += x;
             Pos.Y += y;
         }
 
-        public void Accelerate(Vector2 acceleration)
+        protected void UpdatePhysics(GameTime gameTime)
         {
-            Accelerate(acceleration.X, acceleration.Y);
-        }
-
-        public void Accelerate(float x, float y)
-        {
-            Accel.X = x;
-            Accel.Y = y;
-        }
-
-        public void UpdatePhysics(GameTime gameTime)
-        {
-            Speed += Accel;
-            Accel = Vector2.Zero;
-
-            Speed.Y = MathHelper.Clamp(Speed.Y, -MaxFallingSpeed, MaxFallingSpeed);
-
-            OldPos = Pos;
-            OldSpeed = Speed;
+            //OldPos = Pos;
+            //OldSpeed = Speed;
             PushedLeftWall = PushingLeftWall;
             PushedRightWall = PushingRightWall;
             WasOnGround = IsOnGround;
